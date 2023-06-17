@@ -11,13 +11,13 @@ import requests
 import mysql 
 # connect to the database
 #establishing the connection
-conn = mysql.connector.connect(user='root', password='Csa1809', host='localhost', database="phonepe_pulse")
+conn = mysql.connector.connect(user='root', password='DevaMEA1833', host='localhost', database="phonepe_pulse", auth_plugin = "mysql_native_password")
 
 # create a cursor object -Allows Py code to execute postgreSQL command in database
 cursor = conn.cursor()
 
 #..........TOP BAR.................................#
-SELECT = option_menu(
+SELECT = option_menu( 
     menu_title = None,
     options = ["Home","Data Charts","Visual Data"],
     default_index=2,
@@ -33,11 +33,11 @@ if SELECT == "Home":
     st.download_button("DOWNLOAD", "https://www.phonepe.com/app-download/")
     st.subheader("PhonePe  is an Indian digital payments and financial technology company headquartered in Bengaluru, Karnataka, India. PhonePe was founded in December 2015, by Sameer Nigam, Rahul Chari and Burzin Engineer. The PhonePe app, based on the Unified Payments Interface (UPI), went live in August 2016. It is owned by Flipkart, a subsidiary of Walmart.")
 
-    st.video(r"C:\Users\snaks\OneDrive\Desktop\images & videos\transactionvideo.mp4")
+    st.video(r"C:\Users\DRAGSTA\Desktop\phone pe pulse\transactionvideo.mp4")
     st.subheader("PhonePe is a digital wallet and online payment system that allows users to transfer money, pay bills, and recharge mobile phones. It was founded in December 2015 and is headquartered in Bangalore, India. PhonePe is available in 11 Indian languages and is accepted by over 200 million users and 15 million merchants across India. It is owned by Flipkart, one of India's largest e-commerce companies.")
     st.subheader("Phonepe became a leading digital payments company")
-    st.image(Image.open(r"C:\Users\snaks\OneDrive\Desktop\Phonepe_Pulse_Data_Visualization-main\myfolder\leading.png"))
-    with open(r"C:\Users\snaks\OneDrive\Desktop\Phonepe_Pulse_Data_Visualization-main\myfolder\annual report.pdf","rb") as f:
+    st.image(Image.open(r"C:\Users\DRAGSTA\Desktop\phone pe pulse\leading.png"))
+    with open(r"C:\Users\DRAGSTA\Desktop\phone pe pulse\annual report.pdf","rb") as f:
      data = f.read()
      st.title("Click the button to download the Annual Report")
      st.download_button("DOWNLOAD REPORT",data,file_name="annual report.pdf")
@@ -93,7 +93,7 @@ if SELECT == "Data Charts":
         st.title("List 10 Transaction_Count based on Districts and states")
         st.bar_chart(data=df,x="States",y="Transaction_Count")
             
-        #Option 6     
+        #Option 6      
     elif select=="Top List RegisteredUsers based on states and District":
         cursor.execute("SELECT DISTINCT States,District, SUM(RegisteredUsers) AS Users FROM map_user GROUP BY States,District ORDER BY Users DESC LIMIT 10");
         df = pd.DataFrame(cursor.fetchall(),columns = ['States','District','RegisteredUsers'])
@@ -107,19 +107,19 @@ if SELECT == "Data Charts":
 
 if SELECT == "Visual Data":
    
-  df = pd.read_csv("https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/active_cases_2020-07-17_0800.csv")
-
+ #libre office-ctrl+shift+s(to save file in csv format)
+  df = pd.read_csv(r"C:\Users\DRAGSTA\Desktop\dev\phonepe3map.csv",header=0,sep="\t")
   fig = px.choropleth(
     df,
     geojson="https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson",
     featureidkey='properties.ST_NM',
     locations='state',
-    color='active cases',
+    color='transactions',
     color_continuous_scale='Reds'
   )
 
   fig.update_geos(fitbounds="locations", visible=False)
-  fig.update_layout(title_text='Currently Active PhonePe Transactions Case list - Hover on Each State to view the content')
+  fig.update_layout(title_text='PhonePe Transactions list in 2022 - Hover on Each State to view the content')
   fig.show()
 
 
